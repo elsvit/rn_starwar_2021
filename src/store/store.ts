@@ -3,18 +3,23 @@ import createSagaMiddleware from 'redux-saga';
 import {composeWithDevTools} from 'redux-devtools-extension';
 
 import common, {CommonStateT} from './common';
-import data, {DataStateT} from './data';
+import people, {PeopleStateT} from './people';
 
 import sagas from './sagas';
 
+import {initSwapiServices} from '~/services/swapi';
+import {swapiUrl} from '~/constants/config';
+
 export interface IAppState {
   common: CommonStateT;
-  data: DataStateT;
+  people: PeopleStateT;
 }
+
+export const swapi = initSwapiServices(swapiUrl);
 
 const reducers = combineReducers<IAppState>({
   common,
-  data,
+  people,
 });
 
 const sagaMiddleware = createSagaMiddleware();

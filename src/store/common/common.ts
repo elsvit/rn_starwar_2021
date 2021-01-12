@@ -2,7 +2,7 @@ import {Action, Reducer} from 'redux';
 
 import {IError, IErrors, ErrorCodeType, IBoolDict} from '~/types';
 
-import {DataLoadableT} from '../data';
+import {PeopleLoadableT} from '../people';
 
 // Actions
 export const LOADING = 'LOADING';
@@ -11,7 +11,7 @@ export const ERROR = 'ERROR';
 export const RESET = 'common/RESET';
 export const RESET_ALL = 'common/RESET_ALL';
 
-export type ActionApiT = DataLoadableT;
+export type ActionApiT = PeopleLoadableT;
 
 export interface IActionTypePayload {
   actionType: ActionApiT;

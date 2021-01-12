@@ -1,25 +1,8 @@
-// export interface ILoadableBooleanDict {
-//   [actionType: string]: Maybe<boolean>;
-// }
-// export interface ILoadableStringDict {
-//   [actionType: string]: Maybe<string>;
-// }
-
-export interface IId {
-  id: string;
-}
-
-export interface IIdName extends IId {
-  name: string;
-}
-
 export interface IResponse<T> {
-  data: T;
-}
-
-export interface IOption {
-  value: string;
-  label: string;
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
 }
 
 export interface IBoolDict {

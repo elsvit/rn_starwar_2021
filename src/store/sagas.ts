@@ -1,3 +1,3 @@
-import {saga as data} from './data';
+import {saga as people} from './people';
 
-export default [data];
+export default [people];
