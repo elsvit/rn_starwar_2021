@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import {SafeAreaBackground, ScreenHeader, IScreenHeaderProps} from '~/components/blocks';
-import {COLOR} from '~/constants/style';
+import {COLOR} from '~/constants/styles';
 
 interface IOwnProps {
   screenHeaderProps?: IScreenHeaderProps | null;

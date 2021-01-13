@@ -8,18 +8,18 @@ export const COLOR = {
   pink: '#ff4d99',
   pinkLight: '#ff88aa',
   red: '#ff0000',
+  darkGrey: '#555555',
+  grey: '#777777',
   silver: '#bbc2cd',
   whiteTwo: '#f2f2f2',
   white: '#ffffff',
+  black: '#000000',
   transparent: 'transparent',
-
-  greenRGB: 'rgb(72,215,146)',
-  blueRGB: 'rgb(104,104,245)',
-  whiteRGB: 'rgb(255,255,255)',
 };
 
 export const FONT = {
   SIZE: {
+    fs10: RFValue(10),
     fs12: RFValue(12),
     fs15: RFValue(15),
     fs16: RFValue(16),
@@ -31,11 +31,7 @@ export const FONT = {
 };
 
 export const SIZE = {
-  // inputHeight: 56,
-  // inputHelperHeight: 18,
-  // inputRadius: 4,
-  // cardHeight: 360,
-  // gameCardHeight: 177,
+  inputHeight: 56,
   buttonHeight: 48,
   buttonRadius: 4,
   screenHeaderHeight: 40,

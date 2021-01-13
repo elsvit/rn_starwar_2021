@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Text} from 'react-native';
-import {COLOR, FONT} from '~/constants/style';
+import {COLOR, FONT} from '~/constants/styles';
 
 interface ITypographyProps {
   color?: string;

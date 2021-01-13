@@ -2,7 +2,7 @@ import * as React from 'react';
 import {TouchableOpacity, Text, View} from 'react-native';
 import styled from 'styled-components';
 
-import {COLOR} from '~/constants/style';
+import {COLOR} from '~/constants/styles';
 
 interface ISvgButtonProps {
   SvgIcon?: any;
@@ -18,7 +18,7 @@ export default function SvgButton({
   SvgIcon,
   color = COLOR.white,
   title = '',
-  width = 24,
+  width = 16,
   style,
   onPress,
 }: ISvgButtonProps) {

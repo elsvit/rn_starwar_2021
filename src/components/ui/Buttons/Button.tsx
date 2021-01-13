@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import styled from 'styled-components';
 
-import {COLOR, SIZE} from '~/constants/style';
+import {COLOR, SIZE} from '~/constants/styles';
 
 interface IButtonProps extends TouchableOpacityProps {
   label: string;
@@ -24,7 +24,7 @@ interface IButtonProps extends TouchableOpacityProps {
 
 export function Button({
   label,
-  color = COLOR.white,
+  color = COLOR.red,
   bgColor = 'transparent',
   hasBorder = true,
   onPress,

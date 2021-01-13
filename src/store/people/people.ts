@@ -3,6 +3,7 @@ import {put, takeEvery} from 'redux-saga/effects';
 
 import {IPeople, IPeopleRaw, IResponse} from '~/types';
 import {swapi} from '~/store';
+import {compareByProp} from '~/services/utils';
 import {setError, setLoaded, setLoading} from '../common';
 
 // Actions
@@ -99,10 +100,13 @@ const reducer: Reducer<PeopleStateT> = (
   switch (action.type) {
     case PeopleActions.PEOPLE_GET_SUCCESS: {
       const {count, results, ...rest} = action.payload;
+      const list: IPeople[] = [...state.list, ...results].sort((a, b) =>
+        compareByProp(a, b, 'name'),
+      );
       return {
         ...state,
         count: state.count + count,
-        list: [...state.list, ...results],
+        list,
         ...rest,
       };
     }

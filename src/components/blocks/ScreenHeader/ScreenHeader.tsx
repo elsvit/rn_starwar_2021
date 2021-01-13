@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import {View, TouchableOpacity, ViewStyle} from 'react-native';
+import {View, TouchableOpacity, ViewStyle, Text} from 'react-native';
 
-import {COLOR, SIZE} from '~/constants/style';
+import {COLOR, SIZE, FONT} from '~/constants/styles';
 import {DEVICE} from '~/constants/device';
 import {SvgButton} from '~/components/ui';
 import {ArrowLeftIcon} from '~/assets/icons';
 import {SvgProps} from 'react-native-svg';
 
 export interface IScreenHeaderProps {
-  TitleIcon?: React.FC<SvgProps>;
+  title?: string;
   bgColor?: string;
   color?: string;
   leftLabel?: string;
@@ -21,7 +21,7 @@ export interface IScreenHeaderProps {
 }
 
 export default function ScreenHeader({
-  TitleIcon,
+  title = '',
   bgColor,
   color = COLOR.white,
   leftLabel,
@@ -52,7 +52,7 @@ export default function ScreenHeader({
         )}
 
         <TitleWrapper style={{flex: 1}}>
-          <TitleIcon width={150} height={35} />
+          <TitleLabel>{title}</TitleLabel>
         </TitleWrapper>
 
         <StyledButton activeOpacity={0} style={{alignItems: 'flex-end'}} />
@@ -80,6 +80,14 @@ const TitleWrapper = styled(View)`
   height: 40px;
   justify-content: center;
   align-items: center;
+`;
+
+const TitleLabel = styled(Text)`
+  color: ${COLOR.black};
+  line-height: ${FONT.SIZE.fs16 * 1.2}px;
+  font-size: ${FONT.SIZE.fs16}px;
+  font-weight: bold;
+  text-align: center;
 `;
 
 const BtnsEmptyContainer = styled(View)`
