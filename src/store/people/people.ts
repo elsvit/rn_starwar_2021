@@ -21,11 +21,12 @@ export type PeopleLoadableT =
 
 export interface IPeopleGetAction {
   type: typeof PeopleActions.PEOPLE_GET;
+  payload?: {page: number} & Record<string, string | number>;
 }
 
 export interface IPeopleGetSuccessAction {
   type: typeof PeopleActions.PEOPLE_GET_SUCCESS;
-  payload: IResponse<IPeople>;
+  payload: IResponse<IPeople> & {page: number | null};
 }
 
 export interface IPeopleGetByIdxAction {
@@ -49,11 +50,16 @@ type PeopleActionsT =
   | IPeopleSetSelectedAction
   | IResetPeopleAction;
 
-export const getPeopleAction = (): IPeopleGetAction => ({
+export const getPeopleAction = (
+  payload?: {page: number} & Record<string, string | number>,
+): IPeopleGetAction => ({
   type: PeopleActions.PEOPLE_GET,
+  payload,
 });
 
-export const getPeopleSuccessAction = (payload: IResponse<IPeople>): IPeopleGetSuccessAction => ({
+export const getPeopleSuccessAction = (
+  payload: IResponse<IPeople> & {page: number | null},
+): IPeopleGetSuccessAction => ({
   type: PeopleActions.PEOPLE_GET_SUCCESS,
   payload,
 });
@@ -128,13 +134,13 @@ const reducer: Reducer<PeopleStateT> = (
 
 export default reducer;
 
-function* sagaGetPeople() {
+function* sagaGetPeople({payload}: IPeopleGetAction) {
   const actionType = PeopleActions.PEOPLE_GET;
   try {
     yield put(setLoading({actionType}));
-    const res: IResponse<IPeople> = yield swapi.peopleApi.getPeople(); // todo
+    const res: IResponse<IPeople> = yield swapi.peopleApi.getPeople(payload); // todo
     if (res) {
-      yield put(getPeopleSuccessAction(res));
+      yield put(getPeopleSuccessAction({...res, page: payload?.page || null}));
     }
     yield put(setLoaded({actionType}));
   } catch (error) {

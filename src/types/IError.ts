@@ -14,6 +14,5 @@ export interface IErrorResponse {
 export type IFieldError = Record<string, string[]>;
 
 export interface IErrors {
-  // [key: string]: Maybe<IError>;
   [key: string]: IError | null | undefined;
 }

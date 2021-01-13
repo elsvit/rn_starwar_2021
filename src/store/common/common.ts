@@ -3,6 +3,8 @@ import {Action, Reducer} from 'redux';
 import {IError, IErrors, ErrorCodeType, IBoolDict} from '~/types';
 
 import {PeopleLoadableT} from '../people';
+import {PlanetsLoadableT} from '../planets';
+import {VehiclesLoadableT} from '../vehicles';
 
 // Actions
 export const LOADING = 'LOADING';
@@ -11,7 +13,7 @@ export const ERROR = 'ERROR';
 export const RESET = 'common/RESET';
 export const RESET_ALL = 'common/RESET_ALL';
 
-export type ActionApiT = PeopleLoadableT;
+export type ActionApiT = PeopleLoadableT | PlanetsLoadableT | VehiclesLoadableT;
 
 export interface IActionTypePayload {
   actionType: ActionApiT;

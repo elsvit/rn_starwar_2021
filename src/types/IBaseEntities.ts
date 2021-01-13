@@ -10,5 +10,7 @@ export interface IBoolDict {
 }
 
 export enum ListType {
-  People = 'People',
+  People = 'people',
+  Planets = 'planets',
+  Vehicles = 'vehicles',
 }

@@ -2,6 +2,8 @@ import * as React from 'react';
 import {SafeAreaView, StatusBar, View} from 'react-native';
 import styled from 'styled-components';
 
+import {COLOR} from '~/constants/styles';
+
 export interface ISafeAreaBackground {
   bgColor?: string;
   children?: any;
@@ -9,13 +11,9 @@ export interface ISafeAreaBackground {
 
 export default function SafeAreaBackground({children, bgColor}: ISafeAreaBackground) {
   return (
-    <Wrapper style={{backgroundColor: bgColor || '#ffffff'}}>
-      <StatusBar
-        translucent
-        backgroundColor="transparent"
-        barStyle="dark-content" //"light-content" //'dark-content'
-      />
-      <WrapperSafe style={{backgroundColor: bgColor || '#ffffff'}}>{children}</WrapperSafe>
+    <Wrapper style={{backgroundColor: bgColor || COLOR.white}}>
+      <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
+      <WrapperSafe style={{backgroundColor: bgColor || COLOR.white}}>{children}</WrapperSafe>
     </Wrapper>
   );
 }

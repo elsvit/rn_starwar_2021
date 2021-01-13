@@ -14,9 +14,10 @@ interface IMainViewProps {
   searchedValue: string;
   search: (val: string) => void;
   onItemPress: (type: ListType, idx: number) => void;
+  onLoadMorePress: (type: ListType) => void;
 }
 
-const MainView = ({list, searchedValue, search, onItemPress}: IMainViewProps) => {
+const MainView = ({list, searchedValue, search, onItemPress, onLoadMorePress}: IMainViewProps) => {
   const renderItem = ({
     item,
     index,
@@ -40,6 +41,27 @@ const MainView = ({list, searchedValue, search, onItemPress}: IMainViewProps) =>
     );
   };
 
+  const renderSectionTitle = ({
+    section: {type, title},
+  }: {
+    section: {type: ListType; title: string};
+  }) => {
+    return (
+      <ItemWrapper>
+        <Typography fontSize={FONT.SIZE.fs20} color={COLOR.lavenderBlue}>
+          {title}
+        </Typography>
+        <ItemButton
+          onPress={() => onLoadMorePress(type)}
+          style={{backgroundColor: COLOR.lavenderBlue}}>
+          <Typography fontSize={FONT.SIZE.fs10} color={COLOR.white}>
+            LOAD MORE
+          </Typography>
+        </ItemButton>
+      </ItemWrapper>
+    );
+  };
+
   return (
     <SafeAreaBackground>
       <ScreenHeader title={'Star Wars List'} color={COLOR.white} />
@@ -53,11 +75,7 @@ const MainView = ({list, searchedValue, search, onItemPress}: IMainViewProps) =>
           sections={list}
           keyExtractor={(item, index) => item + index}
           renderItem={(props) => renderItem(props)}
-          renderSectionHeader={({section: {title}}) => (
-            <Typography fontSize={FONT.SIZE.fs20} color={COLOR.lavenderBlue}>
-              {title}
-            </Typography>
-          )}
+          renderSectionHeader={(props) => renderSectionTitle(props)}
         />
       </ListWrapper>
     </SafeAreaBackground>
