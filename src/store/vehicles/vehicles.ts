@@ -1,7 +1,7 @@
 import {Reducer} from 'redux';
 import {put, takeEvery} from 'redux-saga/effects';
 
-import {IVehicle, IVehicleRaw, IResponse} from '~/types';
+import {IVehicle, IVehicleRaw, IResponse, IPlanet} from '~/types';
 import {swapi} from '~/store';
 import {compareByProp} from '~/services/utils';
 import {setError, setLoaded, setLoading} from '../common';
@@ -36,7 +36,7 @@ export interface IVehicleGetByIdxAction {
 
 export interface IVehicleSetSelectedAction {
   type: typeof VehiclesActions.VEHICLES_SET_SELECTED;
-  payload: IVehicle;
+  payload: IVehicle | null;
 }
 
 export interface IResetVehiclesAction {
@@ -69,7 +69,7 @@ export const getVehiclesByIdxAction = (payload: number): IVehicleGetByIdxAction 
   payload,
 });
 
-export const setSelectedVehicleAction = (payload: IVehicle): IVehicleSetSelectedAction => ({
+export const setSelectedVehicleAction = (payload: IVehicle | null): IVehicleSetSelectedAction => ({
   type: VehiclesActions.VEHICLES_SET_SELECTED,
   payload,
 });
@@ -78,7 +78,7 @@ export const resetVehiclesAction = (): IResetVehiclesAction => ({
   type: VehiclesActions.VEHICLES_RESET,
 });
 
-//Reducer
+// Reducer
 export interface IVehicleState {
   page: number | null;
   count: number;
@@ -106,7 +106,9 @@ const reducer: Reducer<VehiclesStateT> = (
   switch (action.type) {
     case VehiclesActions.VEHICLES_GET_SUCCESS: {
       const {count, results, ...rest} = action.payload;
-      const list: IVehicle[] = [...state.list, ...results].sort((a, b) =>
+      const length = state.list.length;
+      const newList: IPlanet[] = results.map((val, idx) => ({...val, idx: length + idx}));
+      const list: IVehicle[] = [...state.list, ...newList].sort((a, b) =>
         compareByProp(a, b, 'name'),
       );
       return {
@@ -152,9 +154,9 @@ function* sagaSetSelectedVehicles({payload}: IVehicleGetByIdxAction) {
   const actionType = VehiclesActions.VEHICLES_GET_BY_IDX;
   try {
     yield put(setLoading({actionType}));
-    const res: IVehicle = yield swapi.vehiclesApi.getVehicleByIdx(payload); // todo
+    const res: IVehicleRaw = yield swapi.vehiclesApi.getVehicleByIdx(payload);
     if (res) {
-      yield put(setSelectedVehicleAction(res));
+      yield put(setSelectedVehicleAction({...res, idx: payload}));
     }
     yield put(setLoaded({actionType}));
   } catch (error) {

@@ -17,4 +17,6 @@ export interface IPeopleRaw {
   vehicles: string[]; //url[]
 }
 
-export interface IPeople extends IPeopleRaw {}
+export interface IPeople extends IPeopleRaw {
+  idx: number;
+}

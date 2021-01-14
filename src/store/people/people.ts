@@ -36,7 +36,7 @@ export interface IPeopleGetByIdxAction {
 
 export interface IPeopleSetSelectedAction {
   type: typeof PeopleActions.PEOPLE_SET_SELECTED;
-  payload: IPeople;
+  payload: IPeople | null;
 }
 
 export interface IResetPeopleAction {
@@ -69,7 +69,7 @@ export const getPeopleByIdxAction = (payload: number): IPeopleGetByIdxAction => 
   payload,
 });
 
-export const setSelectedPeopleAction = (payload: IPeople): IPeopleSetSelectedAction => ({
+export const setSelectedPeopleAction = (payload: IPeople | null): IPeopleSetSelectedAction => ({
   type: PeopleActions.PEOPLE_SET_SELECTED,
   payload,
 });
@@ -106,7 +106,9 @@ const reducer: Reducer<PeopleStateT> = (
   switch (action.type) {
     case PeopleActions.PEOPLE_GET_SUCCESS: {
       const {count, results, ...rest} = action.payload;
-      const list: IPeople[] = [...state.list, ...results].sort((a, b) =>
+      const length = state.list.length;
+      const newList: IPeople[] = results.map((val, idx) => ({...val, idx: length + idx}));
+      const list: IPeople[] = [...state.list, ...newList].sort((a, b) =>
         compareByProp(a, b, 'name'),
       );
       return {
@@ -152,9 +154,9 @@ function* sagaSetSelectedPeople({payload}: IPeopleGetByIdxAction) {
   const actionType = PeopleActions.PEOPLE_GET_BY_IDX;
   try {
     yield put(setLoading({actionType}));
-    const res: IPeople = yield swapi.peopleApi.getPeopleByIdx(payload); // todo
+    const res: IPeopleRaw = yield swapi.peopleApi.getPeopleByIdx(payload); // todo
     if (res) {
-      yield put(setSelectedPeopleAction(res));
+      yield put(setSelectedPeopleAction({...res, idx: payload}));
     }
     yield put(setLoaded({actionType}));
   } catch (error) {

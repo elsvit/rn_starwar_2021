@@ -15,4 +15,6 @@ export interface IVehicleRaw {
   url: string; //"http://swapi.dev/api/planets/1/"
 }
 
-export interface IVehicle extends IVehicleRaw {}
+export interface IVehicle extends IVehicleRaw {
+  idx: number;
+}

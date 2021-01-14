@@ -1,42 +1,30 @@
 import * as React from 'react';
-import {View, SectionList, TouchableOpacity, Text, SectionListProps} from 'react-native';
+import {View, SectionList} from 'react-native';
 import styled from 'styled-components';
-// import {IAdvanceStat} from 'types';
 
 import {COLOR, FONT} from '~/constants/styles';
 import {SafeAreaBackground, ScreenHeader} from '~/components/blocks';
-import {Typography, Button, SvgButton, SearchInput} from '~/components/ui';
-import {IListBlock} from './Main';
+import {Typography, ItemButton, SearchInput} from '~/components/ui';
+import {IListBlock, INameIdx} from './Main';
 import {ListType} from '~/types';
 
 interface IMainViewProps {
   list: IListBlock[];
   searchedValue: string;
   search: (val: string) => void;
-  onItemPress: (type: ListType, idx: number) => void;
+  onItemPress: (type: ListType, idx: number, name: string) => void;
   onLoadMorePress: (type: ListType) => void;
 }
 
 const MainView = ({list, searchedValue, search, onItemPress, onLoadMorePress}: IMainViewProps) => {
-  const renderItem = ({
-    item,
-    index,
-    section: {type},
-  }: {
-    item: string;
-    index: number;
-    section: {type: ListType};
-  }) => {
+  const renderItem = ({item, section: {type}}: {item: INameIdx; section: {type: ListType}}) => {
+    const onPress = () => onItemPress(type, item.idx, item.name);
     return (
       <ItemWrapper>
         <Typography fontSize={FONT.SIZE.fs16} color={COLOR.grey}>
-          {item}
+          {item.name}
         </Typography>
-        <ItemButton onPress={() => onItemPress(type, index)}>
-          <Typography fontSize={FONT.SIZE.fs10} color={COLOR.white}>
-            VIEW
-          </Typography>
-        </ItemButton>
+        <ItemButton label={'VIEW'} onPress={onPress} />
       </ItemWrapper>
     );
   };
@@ -46,18 +34,13 @@ const MainView = ({list, searchedValue, search, onItemPress, onLoadMorePress}: I
   }: {
     section: {type: ListType; title: string};
   }) => {
+    const onPress = () => onLoadMorePress(type);
     return (
       <ItemWrapper>
         <Typography fontSize={FONT.SIZE.fs20} color={COLOR.lavenderBlue}>
           {title}
         </Typography>
-        <ItemButton
-          onPress={() => onLoadMorePress(type)}
-          style={{backgroundColor: COLOR.lavenderBlue}}>
-          <Typography fontSize={FONT.SIZE.fs10} color={COLOR.white}>
-            LOAD MORE
-          </Typography>
-        </ItemButton>
+        <ItemButton label={'LOAD MORE'} onPress={onPress} bgColor={COLOR.lavenderBlue} />
       </ItemWrapper>
     );
   };
@@ -73,7 +56,7 @@ const MainView = ({list, searchedValue, search, onItemPress, onLoadMorePress}: I
       <ListWrapper>
         <SectionList
           sections={list}
-          keyExtractor={(item, index) => item + index}
+          keyExtractor={(item, index) => item.name + index}
           renderItem={(props) => renderItem(props)}
           renderSectionHeader={(props) => renderSectionTitle(props)}
         />
@@ -101,17 +84,6 @@ const ItemWrapper = styled(View)`
   padding-horizontal: 8px;
   padding-vertical: 4px;
   align-items: center;
-`;
-
-const ItemButton = styled(TouchableOpacity)`
-  height: 16px;
-  border-radius: 7px;
-  align-items: center;
-  justify-content: center;
-  padding: 6px;
-  border-width: 1px;
-  background-color: ${COLOR.red};
-  margin-left: 8px;
 `;
 
 export default MainView;

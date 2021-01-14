@@ -3,7 +3,7 @@ export enum ErrorCodeType {
 }
 
 export interface IError extends IErrorResponse {
-  code: ErrorCodeType;
+  code?: ErrorCodeType;
 }
 
 export interface IErrorResponse {

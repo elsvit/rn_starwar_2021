@@ -36,7 +36,7 @@ export interface IPlanetGetByIdxAction {
 
 export interface IPlanetSetSelectedAction {
   type: typeof PlanetsActions.PLANETS_SET_SELECTED;
-  payload: IPlanet;
+  payload: IPlanet | null;
 }
 
 export interface IResetPlanetsAction {
@@ -69,7 +69,7 @@ export const getPlanetsByIdxAction = (payload: number): IPlanetGetByIdxAction =>
   payload,
 });
 
-export const setSelectedPlanetAction = (payload: IPlanet): IPlanetSetSelectedAction => ({
+export const setSelectedPlanetAction = (payload: IPlanet | null): IPlanetSetSelectedAction => ({
   type: PlanetsActions.PLANETS_SET_SELECTED,
   payload,
 });
@@ -106,7 +106,9 @@ const reducer: Reducer<PlanetsStateT> = (
   switch (action.type) {
     case PlanetsActions.PLANETS_GET_SUCCESS: {
       const {count, results, ...rest} = action.payload;
-      const list: IPlanet[] = [...state.list, ...results].sort((a, b) =>
+      const length = state.list.length;
+      const newList: IPlanet[] = results.map((val, idx) => ({...val, idx: length + idx}));
+      const list: IPlanet[] = [...state.list, ...newList].sort((a, b) =>
         compareByProp(a, b, 'name'),
       );
       return {
@@ -152,9 +154,9 @@ function* sagaSetSelectedPlanets({payload}: IPlanetGetByIdxAction) {
   const actionType = PlanetsActions.PLANETS_GET_BY_IDX;
   try {
     yield put(setLoading({actionType}));
-    const res: IPlanet = yield swapi.planetsApi.getPlanetByIdx(payload); // todo
+    const res: IPlanetRaw = yield swapi.planetsApi.getPlanetByIdx(payload); // todo
     if (res) {
-      yield put(setSelectedPlanetAction(res));
+      yield put(setSelectedPlanetAction({...res, idx: payload}));
     }
     yield put(setLoaded({actionType}));
   } catch (error) {

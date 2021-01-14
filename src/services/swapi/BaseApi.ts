@@ -27,7 +27,8 @@ export default class BaseApi {
         return res?.data;
       })
       .catch((error) => {
-        return error;
+        // todo change approach in real project
+        return {message: 'Api Error. Please try later.', errorCode: 'apiError'};
       });
   };
 }

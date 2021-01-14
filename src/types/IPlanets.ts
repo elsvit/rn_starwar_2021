@@ -15,4 +15,6 @@ export interface IPlanetRaw {
   url: string; //"http://swapi.dev/api/planets/1/"
 }
 
-export interface IPlanet extends IPlanetRaw {}
+export interface IPlanet extends IPlanetRaw {
+  idx: number;
+}
